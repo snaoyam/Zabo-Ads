@@ -76,6 +76,7 @@ def get_posts():
       'author_img': post.get('owner', {}).get('profilePhoto'),
       'poster_img': post.get('photos', {})[0].get('url'),
       'updated_at': post.get('updatedAt'),
+      'url': 'https://zabo.sparcs.org/zabo/{}'.format(post.get('_id')),
       **get_colors(post.get('photos', {})[0].get('url')),
       **get_summary(post.get('title'), BeautifulSoup(post.get('description').replace('<p>', '').replace('</p>', '\n'), 'html.parser').text)
     } for post in json.loads(response.text)
@@ -87,7 +88,7 @@ def build_actual_response(response):
 
 
 get_posts()
-print(post_list)
+# print(post_list)
 
 app = Flask(__name__)
 @app.route('/') # 접속하는 url
@@ -95,9 +96,9 @@ def index():
   return build_actual_response(make_response(json.dumps(random.choice(post_list), ensure_ascii=False)))
 
 
-app.run(debug=True)
+# app.run(debug=True)
 # host 등을 직접 지정하고 싶다면
   
 
 if __name__=="__main__":
-  app.run(host='0.0.0.0', port="5000", debug=True)
+  app.run(host='0.0.0.0', port="5001", debug=True)
