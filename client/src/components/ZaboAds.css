@@ -1,5 +1,7 @@
 .zabo-ads {
-  /* position: absolute; */
+  /* position: absolute;
   top: 50px;
-  left: 50px;
+  left: 50px; */
+  display: inline-flex;
+  justify-content: space-between;
 }

@@ -16,8 +16,11 @@ const ZaboAdsBanner = ({ width, height, zaboData }) => {
         <h3> { zaboData.title } </h3>
       </div>
       <img
-        className="zabo-ads-banner__image"
-        src="/zabo_logo.svg"
+        className="zabo-ads-banner__logo"
+        src={zaboData.text_color.toLowerCase() === "#ffffff" ?
+          "/zabo_logo--white.svg" :
+          "/zabo_logo.svg"
+        }
         alt="Zabo"
       />
     </div>

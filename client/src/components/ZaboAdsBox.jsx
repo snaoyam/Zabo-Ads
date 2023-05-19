@@ -36,7 +36,8 @@ const ZaboAdsBox = ({ width, zaboData }) => {
           }}
           alt="Zabo Poster"
         />
-        <div className={isHorizontal ?
+        <div className={
+          isHorizontal ?
           "zabo-ads__content__text--horizontal" :
           "zabo-ads__content__text"
         }>
@@ -47,6 +48,14 @@ const ZaboAdsBox = ({ width, zaboData }) => {
             <p> { zaboData.description } </p>
           </div>
         </div>
+        <img
+          className="zabo-ads-content__logo"
+          src={zaboData.text_color.toLowerCase() === "#ffffff" ?
+            "/zabo_logo--white.svg" :
+            "/zabo_logo.svg"
+          }
+          alt="Zabo"
+        />
       </div>
     </div>
   )
