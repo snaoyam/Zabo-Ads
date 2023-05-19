@@ -8,6 +8,9 @@ function App() {
       <ZaboAds width='300px' />
       <ZaboAds width='200px' />
       <ZaboAds width='100px' />
+
+      <ZaboAds option='banner' />
+      <ZaboAds option='banner' width='100%' />
     </div>
   )
 }

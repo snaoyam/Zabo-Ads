@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { fetchZaboData } from '../api/fetch'
 import ZaboAdsBox from './ZaboAdsBox'
+import ZaboAdsBanner from './ZaboAdsBanner'
 import './ZaboAds.css'
 
-const ZaboAds = ({ width = '400px' }) => {
+const ZaboAds = ({ width = '400px', height = '100px', style = {}, option = '' }) => {
   const [ zaboData, setZaboData ] = useState(
     {
       poster_img: "",
@@ -25,8 +26,12 @@ const ZaboAds = ({ width = '400px' }) => {
   }, [])
 
   return (
-    <div className="zabo-ads">
-      <ZaboAdsBox width={ width } zaboData={ zaboData } />
+    <div className="zabo-ads" style={ style }>
+      {
+        option === 'banner' ?
+        <ZaboAdsBanner width={ width } height={ height } zaboData={ zaboData } /> :
+        <ZaboAdsBox width={ width } zaboData={ zaboData } />
+      }
     </div>
   )
 }

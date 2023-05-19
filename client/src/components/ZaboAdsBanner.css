@@ -1,0 +1,10 @@
+.zabo-ads-banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.zabo-ads-banner__image {
+  height: 30px;
+}
