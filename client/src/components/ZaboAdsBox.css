@@ -1,0 +1,29 @@
+.zabo-ads__container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 400px;
+  border: 1px solid black;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;
+}
+
+.zabo-ads__content {
+  position: relative;
+  padding: 25px;
+}
+
+.zabo-ads__content__image {
+  width: 350px;
+}
+
+.zabo-ads__content__text--horizontal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 50px);
+}

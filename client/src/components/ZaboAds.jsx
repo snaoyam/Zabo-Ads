@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { fetchZaboData } from '../api/fetch'
+import ZaboAdsBox from './ZaboAdsBox'
 import './ZaboAds.css'
 
 const ZaboAds = ({ width = '400px' }) => {
   const [ zaboData, setZaboData ] = useState(
     {
-      poster: "",
+      poster_img: "",
       background_color: "",
       text_color: "",
       author: "",
@@ -14,7 +15,6 @@ const ZaboAds = ({ width = '400px' }) => {
       description: ""
     }
   )
-  const [ isHorizontal, setIsHorizontal ] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,59 +24,9 @@ const ZaboAds = ({ width = '400px' }) => {
     fetchData();
   }, [])
 
-  useEffect(() => {
-    const img = new Image()
-    img.src = zaboData.poster
-    img.onload = () => {
-      if (img.width >= img.height) {
-        setIsHorizontal(true)
-      } else {
-        setIsHorizontal(false)
-      }
-    }
-  }, [ zaboData ])
-
   return (
     <div className="zabo-ads">
-      <div
-        className="zabo-ads__container"
-        style={{
-          width,
-          backgroundColor: zaboData.background_color,
-          color: zaboData.text_color,
-          borderColor: zaboData.text_color
-        }}
-      >
-        <div
-          className="zabo-ads__content"
-          style={
-            isHorizontal ?
-            { paddingTop: "15px" } :
-            {}
-          }
-        >
-          <img
-            className="zabo-ads__content__image"
-            src={ zaboData.poster }
-            style={{
-              width: `calc(${width} - 50px)`,
-              filter: isHorizontal ? "blur(3px)" : "",
-            }}
-            alt="Zabo Poster"
-          />
-          <div className={isHorizontal ?
-            "zabo-ads__content__text--horizontal" :
-            "zabo-ads__content__text"
-          }>
-            <div className="zabo-ads__content__title">
-              <h3> { zaboData.title } </h3>
-            </div>
-            <div className="zabo-ads__content__description">
-              <p> { zaboData.description } </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ZaboAdsBox width={ width } zaboData={ zaboData } />
     </div>
   )
 }
