@@ -14,18 +14,39 @@ openai.api_key = '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'
 post_list = list()
 
 def get_posts():
-  def get_colors(url):
-    print(url)
+  def get_colors(url, id):
+    print(id)
     response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-    img = img.resize((128, 128))
-    pixels = np.array(list(img.getdata()))
+    img = Image.open(BytesIO(response.content)).convert("RGBA")
+    resized_img = img.resize((192, 192))
+
+    rw, rh = resized_img.size
+    thickness = 6
+    for x in range(thickness, rw - thickness):
+      for y in range(thickness, rh - thickness):
+        resized_img.putpixel((x,y),(0,0,0,0))
+
+    pixels = np.array(list(resized_img.getdata()))
     kmeans = KMeans(n_clusters = 1, n_init=10)
     kmeans = kmeans.fit(pixels)
     centroids = kmeans.cluster_centers_
-    [r,g,b] = centroids[0]
-    background_color = ('#%02x%02x%02x' % (int(r), int(g), int(b))).upper()
+    [r,g,b,a] = centroids[0]
+    r,b,g = int(r),int(g),int(b)
+    background_color = ('#%02x%02x%02x' % (r,g,b)).upper()
     text_color = '#000000' if (r*0.299 + g*0.587 + b*0.114) > 186 else '#FFFFFF'
+
+    # datas = img.getdata()
+    # newData = []
+    # delta = 70
+    # for item in datas:
+    #     if item[0] in range(r-delta, r+delta) and item[1] in range(g-delta, g+delta) and item[2] in range(b-delta, b+delta):
+    #         newData.append((255, 255, 255, 0))
+    #     else:
+    #         newData.append(item)
+
+    # img.putdata(newData)
+    # img.save('output/{}.png'.format(id), 'png')
+
     return {'background_color': background_color, 'text_color': text_color}
   
   def get_summary(title, description):
@@ -77,7 +98,7 @@ def get_posts():
       'poster_img': post.get('photos', {})[0].get('url'),
       'updated_at': post.get('updatedAt'),
       'url': 'https://zabo.sparcs.org/zabo/{}'.format(post.get('_id')),
-      **get_colors(post.get('photos', {})[0].get('url')),
+      **get_colors(post.get('photos', {})[0].get('url'), post.get('_id')),
       **get_summary(post.get('title'), BeautifulSoup(post.get('description').replace('<p>', '').replace('</p>', '\n'), 'html.parser').text)
     } for post in json.loads(response.text)
   ]
@@ -101,4 +122,4 @@ def index():
   
 
 if __name__=="__main__":
-  app.run(host='0.0.0.0', port="5000", debug=True)
+  app.run(host='0.0.0.0', port="5001", debug=True)
