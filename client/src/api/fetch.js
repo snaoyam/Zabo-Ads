@@ -20,7 +20,6 @@ const testVertical = {
   "description": "택시 탑승 인증 이벤트 및 인스타그램 공유 이벤트 진행 중!"
 }
 
-// refactor above fetchZaboData function to axios
 const fetchZaboData = async () => {
   const response = await axios.get('http://localhost:5000/');
   const data = await response.data;

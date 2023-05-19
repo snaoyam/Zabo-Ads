@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ZaboAdsBox.css'
 
-const ZaboAdsBox = ({ width, zaboData }) => {
+const ZaboAdsBox = ({ width, zaboData, fetchData }) => {
   const [ isHorizontal, setIsHorizontal ] = useState(false)
 
   useEffect(() => {
@@ -49,13 +49,25 @@ const ZaboAdsBox = ({ width, zaboData }) => {
           </div>
         </div>
         <img
-          className="zabo-ads-content__logo"
+          className="zabo-ads__logo"
           src={zaboData.text_color.toLowerCase() === "#ffffff" ?
             "/zabo_logo--white.svg" :
             "/zabo_logo.svg"
           }
           alt="Zabo"
         />
+        <button
+          className="zabo-ads__refresh"
+          onClick={(e) => {
+            e.preventDefault()
+            fetchData()
+          }}
+          style={{
+            color: zaboData.text_color,
+          }}
+        >
+          {"↻"}
+        </button>
       </div>
     </div>
   )

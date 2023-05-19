@@ -13,26 +13,30 @@ const ZaboAds = ({ width = '300px', height = '90px', style = {}, option = '' }) 
       author: "",
       author_img: "",
       title: "",
-      description: ""
+      description: "",
+      url: ""
     }
   )
 
+  const fetchData = async () => {
+    const data = await fetchZaboData()
+    setZaboData(data)
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchZaboData()
-      setZaboData(data)
-    }
     fetchData();
   }, [])
 
   return (
+    <a href={ zaboData.url } target="_blank" rel="noreferrer">
     <div className="zabo-ads" style={ style }>
       {
         option === 'banner' ?
-        <ZaboAdsBanner width={ width } height={ height } zaboData={ zaboData } /> :
-        <ZaboAdsBox width={ width } zaboData={ zaboData } />
+        <ZaboAdsBanner width={ width } height={ height } zaboData={ zaboData } fetchData={ fetchData } /> :
+        <ZaboAdsBox width={ width } zaboData={ zaboData } fetchData={ fetchData } />
       }
     </div>
+    </a>
   )
 }
 

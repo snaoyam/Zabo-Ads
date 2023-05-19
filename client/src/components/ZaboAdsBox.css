@@ -15,6 +15,10 @@
   padding: 10px;
 }
 
+.zabo-ads__content__title {
+  word-break: keep-all;
+}
+
 .zabo-ads__content__text {
   margin-bottom: 35px;
 }
@@ -25,11 +29,4 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: calc(100% - 40px);
-}
-
-.zabo-ads-content__logo {
-  height: 25px;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
 }

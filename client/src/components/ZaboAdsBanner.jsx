@@ -1,6 +1,6 @@
 import './ZaboAdsBanner.css';
 
-const ZaboAdsBanner = ({ width, height, zaboData }) => {
+const ZaboAdsBanner = ({ width, height, zaboData, fetchData }) => {
   return (
     <div
       className="zabo-ads-banner"
@@ -13,16 +13,30 @@ const ZaboAdsBanner = ({ width, height, zaboData }) => {
       }}
     >
       <div className="zabo-ads-banner__title">
-        <h3> { zaboData.title } </h3>
+        <h3 className="zabo-ads-banner__title--inner">
+          { zaboData.title }
+        </h3>
       </div>
       <img
-        className="zabo-ads-banner__logo"
+        className="zabo-ads__logo"
         src={zaboData.text_color.toLowerCase() === "#ffffff" ?
           "/zabo_logo--white.svg" :
           "/zabo_logo.svg"
         }
         alt="Zabo"
       />
+      <button
+        className="zabo-ads__refresh"
+        onClick={(e) => {
+          e.preventDefault()
+          fetchData()
+        }}
+        style={{
+          color: zaboData.text_color,
+        }}
+      >
+        {"↻"}
+      </button>
     </div>
   )
 }
