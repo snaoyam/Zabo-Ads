@@ -3,8 +3,17 @@
   flex-direction: row;
   justify-content: space-between;
   width: 400px;
+  position: relative;
+  border: 1px solid;
+}
+
+.zabo-ads-banner__title {
+  margin-left: 15px;
 }
 
 .zabo-ads-banner__image {
   height: 30px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }

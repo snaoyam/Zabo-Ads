@@ -4,7 +4,7 @@ import ZaboAdsBox from './ZaboAdsBox'
 import ZaboAdsBanner from './ZaboAdsBanner'
 import './ZaboAds.css'
 
-const ZaboAds = ({ width = '400px', height = '100px', style = {}, option = '' }) => {
+const ZaboAds = ({ width = '300px', height = '90px', style = {}, option = '' }) => {
   const [ zaboData, setZaboData ] = useState(
     {
       poster_img: "",

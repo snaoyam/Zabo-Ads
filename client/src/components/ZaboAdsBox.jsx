@@ -26,19 +26,12 @@ const ZaboAdsBox = ({ width, zaboData }) => {
         borderColor: zaboData.text_color
       }}
     >
-      <div
-        className="zabo-ads__content"
-        style={
-          isHorizontal ?
-          { paddingTop: "15px" } :
-          {}
-        }
-      >
+      <div className="zabo-ads__content">
         <img
           className="zabo-ads__content__image"
           src={ zaboData.poster_img }
           style={{
-            width: `calc(${width} - 50px)`,
+            width: `calc(${width} - 20px)`,
             filter: isHorizontal ? "blur(3px)" : "",
           }}
           alt="Zabo Poster"

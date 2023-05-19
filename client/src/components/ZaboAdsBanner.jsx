@@ -8,7 +8,8 @@ const ZaboAdsBanner = ({ width, height, zaboData }) => {
         width,
         height,
         backgroundColor: zaboData.background_color,
-        color: zaboData.text_color
+        color: zaboData.text_color,
+        borderColor: zaboData.text_color
       }}
     >
       <div className="zabo-ads-banner__title">
