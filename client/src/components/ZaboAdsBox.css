@@ -15,6 +15,14 @@
   padding: 10px;
 }
 
+.zabo-ads__content__title {
+  word-break: keep-all;
+}
+
+.zabo-ads__content__text {
+  margin-bottom: 35px;
+}
+
 .zabo-ads__content__text--horizontal {
   position: absolute;
   left: 50%;
