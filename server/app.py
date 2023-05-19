@@ -4,8 +4,9 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import openai
+import random
 
-openai.api_key = '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'
+openai.api_key = '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'
 post_list = list()
 
 def get_posts():
@@ -73,7 +74,7 @@ app = Flask(__name__)
 
 @app.route('/') # 접속하는 url
 def index():
-  return json.dumps(post_list, ensure_ascii=False)
+  return json.dumps(random.choice(post_list), ensure_ascii=False)
 
 app.run(debug=True)
 # host 등을 직접 지정하고 싶다면
