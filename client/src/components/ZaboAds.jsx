@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { fetchZaboData } from '../api/fetch'
 import './ZaboAds.css'
 
-const ZaboAds = () => {
+const ZaboAds = ({ width = '400px' }) => {
   const [ zaboData, setZaboData ] = useState(
     {
       poster: "",
@@ -41,20 +41,27 @@ const ZaboAds = () => {
       <div
         className="zabo-ads__container"
         style={{
+          width,
           backgroundColor: zaboData.background_color,
           color: zaboData.text_color,
           borderColor: zaboData.text_color
         }}
       >
-        <div className="zabo-ads__content">
+        <div
+          className="zabo-ads__content"
+          style={
+            isHorizontal ?
+            { paddingTop: "15px" } :
+            {}
+          }
+        >
           <img
             className="zabo-ads__content__image"
             src={ zaboData.poster }
-            style={
-              isHorizontal ?
-              { filter: "blur(3px)" } :
-              {}
-            }
+            style={{
+              width: `calc(${width} - 50px)`,
+              filter: isHorizontal ? "blur(3px)" : "",
+            }}
             alt="Zabo Poster"
           />
           <div className={isHorizontal ?
