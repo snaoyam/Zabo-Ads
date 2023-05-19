@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchZaboData } from '../api/fetch'
+import { fetchZaboData } from './api/fetch'
 import ZaboAdsBox from './ZaboAdsBox'
 import ZaboAdsBanner from './ZaboAdsBanner'
 import './ZaboAds.css'

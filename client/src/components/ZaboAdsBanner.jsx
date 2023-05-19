@@ -1,4 +1,6 @@
 import './ZaboAdsBanner.css';
+import ZaboLogo from './assets/zabo_logo.svg';
+import ZaboLogoWhite from './assets/zabo_logo--white.svg';
 
 const ZaboAdsBanner = ({ width, height, zaboData, fetchData }) => {
   return (
@@ -20,8 +22,8 @@ const ZaboAdsBanner = ({ width, height, zaboData, fetchData }) => {
       <img
         className="zabo-ads__logo"
         src={zaboData.text_color.toLowerCase() === "#ffffff" ?
-          "/zabo_logo--white.svg" :
-          "/zabo_logo.svg"
+          ZaboLogoWhite :
+          ZaboLogo
         }
         alt="Zabo"
       />
