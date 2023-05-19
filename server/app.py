@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response, jsonify
 import time
 import requests
 import json
@@ -65,7 +65,9 @@ def get_posts():
       **get_summary(post.get('title'), BeautifulSoup(post.get('description').replace('<p>', '').replace('</p>', '\n'), 'html.parser').text)
     } for post in json.loads(response.text)
   ]
-
+def build_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 
 get_posts()
@@ -74,11 +76,12 @@ app = Flask(__name__)
 
 @app.route('/') # 접속하는 url
 def index():
-  return json.dumps(random.choice(post_list), ensure_ascii=False)
+  return build_actual_response(make_response(json.dumps(random.choice(post_list), ensure_ascii=False)))
+
 
 app.run(debug=True)
 # host 등을 직접 지정하고 싶다면
   
 
 if __name__=="__main__":
-  app.run(host="localhost", port="5000", debug=True)
+  app.run(host='0.0.0.0', port="5000", debug=True)
