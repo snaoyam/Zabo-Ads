@@ -1,21 +1,21 @@
-from flask import Flask, make_response, jsonify
-import time
+from flask import Flask, make_response
 import requests
-import json
-from bs4 import BeautifulSoup
 import openai
 import random
+import json
 from PIL import Image
 from io import BytesIO
 from sklearn.cluster import KMeans
 import numpy as np
+import re
+import datetime
 
 openai.api_key = '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'
 post_list = list()
 
 def get_posts():
   def get_colors(url, id):
-    print(id)
+    # print(id)
     response = requests.get(url)
     img = Image.open(BytesIO(response.content)).convert("RGBA")
     resized_img = img.resize((192, 192))
@@ -49,7 +49,7 @@ def get_posts():
 
     return {'background_color': background_color, 'text_color': text_color}
   
-  def get_summary(title, description):
+  def process_title(title):
     # title_prompt = "핵심 단어 5개 이하로 ,로 구분해서 주체를 포함해서 요약해줘: {}".format(title)
     # title_resp = openai.Completion.create(
     #   model='text-davinci-003',
@@ -60,6 +60,23 @@ def get_posts():
     # ).choices[0].text.strip()
     # short_title = ' '.join([l.strip() for l in title_resp.split(',')])
     # print(short_title)
+    title = re.sub(r'kaist', '', title, flags=re.IGNORECASE)
+    title = re.sub(r'for', '', title, flags=re.IGNORECASE)
+    current_year = datetime.date.today().year
+    title = re.sub(r'{}\S* '.format(current_year), '', title)
+    title = re.sub(r'{}\S* '.format(current_year-1), '', title)
+    title = re.sub(r'제.기 ', '', title)
+    title = re.sub(r'\(.*\)', '', title)
+    title = title.replace('[', '').replace(']', '').replace(':', '').replace('!', '')
+    title = re.sub(r'\S*(안내|공고|개최|알림)\S*', '', title)
+    emoji_pattern = re.compile("["
+      u"\U0001F600-\U0001F64F"  # emoticons
+      u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+      u"\U0001F680-\U0001F6FF"  # transport & map symbols
+      u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+    "]+", flags=re.UNICODE)
+    title = emoji_pattern.sub(r'', title)
+    title = re.sub(r'\s\s*', ' ', title).strip()
 
     # des_prompt = '{0}을 위한 중요한 일정을 [날짜] 형식으로 일정만 알려줘: \n{1}'.format(short_title, description)
     # des_resp = openai.Completion.create(
@@ -99,7 +116,8 @@ def get_posts():
       'updated_at': post.get('updatedAt'),
       'url': 'https://zabo.sparcs.org/zabo/{}'.format(post.get('_id')),
       **get_colors(post.get('photos', {})[0].get('url'), post.get('_id')),
-      **get_summary(post.get('title'), BeautifulSoup(post.get('description').replace('<p>', '').replace('</p>', '\n'), 'html.parser').text)
+      **process_title(post.get('title'))
+      #BeautifulSoup(post.get('description').replace('<p>', '').replace('</p>', '\n'), 'html.parser').text
     } for post in json.loads(response.text)
   ]
 
@@ -122,4 +140,4 @@ def index():
   
 
 if __name__=="__main__":
-  app.run(host='0.0.0.0', port="5000", debug=True)
+  app.run(host='0.0.0.0', port="5001", debug=True)
