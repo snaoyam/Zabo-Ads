@@ -26,12 +26,12 @@ def get_posts():
       for y in range(thickness, rh - thickness):
         resized_img.putpixel((x,y),(0,0,0,0))
 
-    pixels = np.array(list(resized_img.getdata()))
+    pixels = np.array([l for l in list(resized_img.getdata()) if not l == (0,0,0,0)])
     kmeans = KMeans(n_clusters = 1, n_init=10)
     kmeans = kmeans.fit(pixels)
     centroids = kmeans.cluster_centers_
     [r,g,b,a] = centroids[0]
-    r,b,g = int(r),int(g),int(b)
+    r,g,b = int(r),int(g),int(b)
     background_color = ('#%02x%02x%02x' % (r,g,b)).upper()
     text_color = '#000000' if (r*0.299 + g*0.587 + b*0.114) > 186 else '#FFFFFF'
 
