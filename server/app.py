@@ -5,14 +5,29 @@ import json
 from bs4 import BeautifulSoup
 import openai
 import random
+from PIL import Image
+from io import BytesIO
+from sklearn.cluster import KMeans
+import numpy as np
 
 openai.api_key = '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'
 post_list = list()
 
 def get_posts():
   def get_colors(url):
-    # image = requests.get(url)
-    return {'background_color': '#ffffff', 'text_color': '#000000'}
+    print(url)
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    img = img.resize((128, 128))
+    pixels = np.array(list(img.getdata()))
+    kmeans = KMeans(n_clusters = 1, n_init=10)
+    kmeans = kmeans.fit(pixels)
+    centroids = kmeans.cluster_centers_
+    [r,g,b] = centroids[0]
+    background_color = ('#%02x%02x%02x' % (int(r), int(g), int(b))).upper()
+    text_color = '#000000' if (r*0.299 + g*0.587 + b*0.114) > 186 else '#FFFFFF'
+    return {'background_color': background_color, 'text_color': text_color}
+  
   def get_summary(title, description):
     # title_prompt = "핵심 단어 5개 이하로 ,로 구분해서 주체를 포함해서 요약해줘: {}".format(title)
     # title_resp = openai.Completion.create(
@@ -39,6 +54,7 @@ def get_posts():
     return {'title': title, 'description': None}
     # short_description = ' '.join([l.strip() for l in title_resp.split(',')])
 
+
   global post_list
   url = 'https://zabo.sparcs.org/api/zabo/list'
   headers = {
@@ -46,9 +62,8 @@ def get_posts():
       'sec-fetch-site': 'same-origin',
       'sec-fetch-dest': 'empty',
       'accept-language': 'en-US,en;q=0.9',
-      'if-none-match': 'W/"11cc3-nOdcIKO6GJGyswZvmklAG+VDS/I"',
       'sec-fetch-mode': 'cors',
-      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15',
+      'user-agent': 'Mozilla/5.0',
       'referer': 'https://zabo.sparcs.org/',
       # 'accept-encoding': 'gzip, deflate, br',
   }
@@ -65,15 +80,16 @@ def get_posts():
       **get_summary(post.get('title'), BeautifulSoup(post.get('description').replace('<p>', '').replace('</p>', '\n'), 'html.parser').text)
     } for post in json.loads(response.text)
   ]
+
 def build_actual_response(response):
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
 get_posts()
+print(post_list)
 
 app = Flask(__name__)
-
 @app.route('/') # 접속하는 url
 def index():
   return build_actual_response(make_response(json.dumps(random.choice(post_list), ensure_ascii=False)))
